@@ -1,9 +1,11 @@
 <script lang="ts">
-  import { Modal, ModalBody, ModalFooter, ModalHeader } from '@sveltestrap/sveltestrap';
+  import { Modal, ModalBody, ModalFooter } from '@sveltestrap/sveltestrap';
   import { get } from '$lib/fetch';
   import type { Bundle, BundleCountry } from '$lib/interfaces';
   import Spinner from '$lib/components/Spinner.svelte';
   import RoamingCountries from './RoamingCountries.svelte';
+  import Icon from './Icon.svelte';
+  import { convertBundleSize } from '$lib';
 
   export let bundle: Bundle;
   export let open = false;
@@ -28,18 +30,39 @@
 </script>
 
 <Modal isOpen={open} centered {toggle} size="lg" scrollable>
-  <ModalHeader {toggle}>{bundle.description}</ModalHeader>
-  <ModalBody class="bd pe-4 p-0">
+  <ModalBody class="bd pe-md-4 p-0">
     {#if ready}
       <div class="row g-0">
         <div class="col-md-4">
-          <img
-            src={bundleDetail.imageUrl}
-            class="img-fluid rounded-start"
-            alt={bundleDetail.name}
-          />
+          <div class="card bg-dark text-white">
+            <img src={bundleDetail.imageUrl} class="card-img img-fluid" alt={bundleDetail.name} />
+            <div class="card-img-overlay d-flex align-items-end flex-column">
+              <div class="flex-grow-1">
+                <h5 class="card-title text-white">{bundle.countries[0].name}</h5>
+                {bundle.description}
+              </div>
+              <div>
+                <div class="d-flex flex-wrap gap-4">
+                  <Icon
+                    icon="bi-database-fill"
+                    content={convertBundleSize(bundleDetail.dataAmount)}
+                  />
+                  <Icon icon="bi-clock-fill" content="{bundleDetail.duration} days" />
+                  <Icon icon="bi-globe" content="{bundleDetail.roamingEnabled.length} Countries" />
+                  <Icon
+                    icon="bi-speedometer2"
+                    content="{bundleDetail.speed ? bundleDetail.speed : 'Unknown'} "
+                  />
+                  <Icon
+                    icon="bi-skip-end-circle"
+                    content="Autostart {bundleDetail.autostart ? 'Enabled' : 'Disabled'} "
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-md-8 py-4 ps-4 detail">
+        <div class="col-md-8 py-4 px-4 pe-md-0 detail">
           <div class="card-body">
             <h5 class="card-title">Bundle Details</h5>
             <p>{bundleDetail.description}</p>
@@ -74,5 +97,16 @@
   .detail {
     height: 38vw;
     overflow-y: scroll;
+  }
+  @include media-breakpoint-down(md) {
+    .img-fluid {
+      height: 78vw !important;
+    }
+    .detail {
+      height: 78vw !important;
+    }
+  }
+  .card-img-overlay {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000 100%);
   }
 </style>

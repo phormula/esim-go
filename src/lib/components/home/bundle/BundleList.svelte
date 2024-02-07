@@ -4,25 +4,31 @@
   import type { Bundle, Country } from '$lib/interfaces';
   import { countries } from '$lib';
   import Select from 'svelte-select';
-  import BundleView from './Bundle.svelte';
+  import BundleCard from '$lib/components/home/bundle/BundleCard.svelte';
 
   export let region: string;
   let ready = false;
   let bundles: Bundle[];
   let destinationCountry: Country | undefined;
   let countryList: Country[] = countries.filter((country) => country.region === region);
+  let page = 1;
+  let perPage = 16;
+  let totalPages: number;
+  let loadingNew = false;
 
+  async function fetchBundles(countries: string[]) {
+    const response = await get('/catalogue', {
+      region,
+      countries: countries.join(','),
+      page,
+      perPage
+    });
+    totalPages = response.pageCount;
+    return response.bundles;
+  }
   async function getBundles(countries: string[] = []) {
     ready = false;
-    const response = await get('/catalogue', {
-      page: 1,
-      limit: 15,
-      sort: 'description:asc',
-      group: 'Standard eSIM Bundles',
-      region,
-      countries: countries.join(',')
-    });
-    bundles = response.bundles;
+    bundles = await fetchBundles(countries);
     ready = true;
   }
 
@@ -45,7 +51,18 @@
   }
 
   async function listBundleByCountry() {
-    await getBundles([String(destinationCountry?.iso)]);
+    page = 1;
+    const countries = destinationCountry ? [destinationCountry.iso] : [];
+    await getBundles(countries);
+  }
+
+  async function loadMoreBundles() {
+    const countries = destinationCountry ? [destinationCountry.iso] : [];
+    page = page + 1;
+    loadingNew = true;
+    const newBundles = await fetchBundles(countries);
+    bundles = [...bundles, ...newBundles];
+    loadingNew = false;
   }
 </script>
 
@@ -62,10 +79,20 @@
 />
 {#if ready}
   {#each bundles as bundle}
-    <BundleView {bundle} />
+    <BundleCard {bundle} />
   {:else}
     <div class="col-md-3"><span>No Bundle found</span></div>
   {/each}
+  {#if loadingNew}
+    <div class="w-100 d-flex justify-content-center">
+      <Spinner classes="spinner-grow spinner-grow-sm" />
+    </div>
+  {/if}
+  {#if bundles.length && page < totalPages}
+    <button class="btn btn-dark w-100" on:click={loadMoreBundles} disabled={loadingNew}>
+      Load more
+    </button>
+  {/if}
 {:else}
   <div class="col-md-12">
     <span class="load d-flex justify-content-center">

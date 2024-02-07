@@ -1,6 +1,7 @@
 <script lang="ts">
+  import { convertBundleSize } from '$lib';
   import type { Bundle } from '$lib/interfaces';
-  import BundleDetail from './BundleDetail.svelte';
+  import BundleDetail from './detail/BundleDetail.svelte';
 
   export let bundle: Bundle;
   let open = false;
@@ -22,7 +23,7 @@
       <p class="card-text">
         {bundle.description}
       </p>
-      <div class="bg-dark">{bundle.dataAmount} mB</div>
+      <div class="box-bg p-2 rounded-3">{convertBundleSize(bundle.dataAmount)}</div>
     </div>
   </div>
 </div>
@@ -30,6 +31,15 @@
 <BundleDetail bind:open {bundle} />
 
 <style lang="scss">
+  .col-md-3 {
+    .card {
+      cursor: pointer;
+      &:hover {
+        box-shadow: $box-shadow !important;
+        border: 5px solid;
+      }
+    }
+  }
   @include media-breakpoint-up(md) {
     .card-img {
       height: 10vw !important;
@@ -42,5 +52,10 @@
   }
   .card-img-overlay {
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000 100%);
+  }
+  .box-bg {
+    position: absolute;
+    bottom: 0;
+    left: 80%;
   }
 </style>

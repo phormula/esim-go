@@ -1,5 +1,13 @@
 import type { Country } from './interfaces';
 
+export function convertBundleSize(data: number) {
+  if (data >= 1000) {
+    return `${data / 1000}GB`;
+  }
+
+  return `${data}MB`;
+}
+
 // place files you want to import through the `$lib` alias in this folder.
 export const regions = [
   'Africa',

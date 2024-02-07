@@ -20,9 +20,3 @@
     </div>
   </div>
 </div>
-
-<style>
-  .box-bg {
-    background-color: #163300;
-  }
-</style>
