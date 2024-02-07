@@ -1,0 +1,221 @@
+// @import './variables';
+// @import 'bootstrap/scss/bootstrap.scss';
+
+/*!
+ =========================================================
+ * ArchitectUI HTML Theme Dashboard - v2.0.0
+ =========================================================
+ * Product Page: https://dashboardpack.com
+ * Copyright 2021 DashboardPack (https://dashboardpack.com)
+ * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+ =========================================================
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ */
+
+// BOOTSTRAP 5 VARIABLES
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import 'bootstrap/scss/functions';
+
+// 2. Include any default variable overrides here
+
+@import 'themes/layout-variables';
+
+// 3. Include remainder of required Bootstrap stylesheets
+
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/utilities';
+
+// BOOTSTRAP 5 IMPORTS
+
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/type';
+@import 'bootstrap/scss/images';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/tables';
+@import 'bootstrap/scss/forms';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/transitions';
+@import 'bootstrap/scss/dropdown';
+@import 'bootstrap/scss/button-group';
+@import 'bootstrap/scss/nav';
+@import 'bootstrap/scss/navbar';
+@import 'bootstrap/scss/card';
+@import 'bootstrap/scss/accordion';
+@import 'bootstrap/scss/breadcrumb';
+@import 'bootstrap/scss/pagination';
+@import 'bootstrap/scss/badge';
+@import 'bootstrap/scss/alert';
+@import 'bootstrap/scss/progress';
+@import 'bootstrap/scss/list-group';
+@import 'bootstrap/scss/close';
+@import 'bootstrap/scss/toasts';
+@import 'bootstrap/scss/modal';
+@import 'bootstrap/scss/tooltip';
+@import 'bootstrap/scss/popover';
+@import 'bootstrap/scss/carousel';
+@import 'bootstrap/scss/spinners';
+@import 'bootstrap/scss/offcanvas';
+@import 'bootstrap/scss/helpers';
+@import 'bootstrap/scss/utilities/api';
+// LAYOUT
+
+@import 'layout/layout';
+
+// UTILS
+
+@import 'utils/helpers';
+@import 'utils/backgrounds';
+@import 'utils/animate';
+@import 'utils/comps-animations';
+
+// ELEMENTS
+
+@import 'elements/buttons';
+@import 'elements/dropdown';
+@import 'elements/badges';
+@import 'elements/cards';
+@import 'elements/tabs';
+@import 'elements/accordions';
+@import 'elements/modals';
+@import 'elements/navs';
+@import 'elements/listgroup';
+@import 'elements/forms';
+@import 'elements/pagination';
+
+// DASHBOARD BOXES
+
+@import 'widgets/content-boxes/content-boxes';
+
+// COMPONENTS
+// Perfect Scrollbar
+@import 'components/perfect-scrollbar/perfect-scrollbar';
+
+// FontAwesome
+@import 'components/icons/fontawesome/fontawesome';
+// P7 Icons
+@import 'components/icons/p7icons';
+// Hamburger button
+@import 'components/hamburgers/hamburgers';
+// Notifications
+@import 'components/notifications/toastr';
+// Popovers & Tooltips
+@import 'components/popovers-tooltips/popovers-tooltips';
+// Calendar
+@import 'components/calendar/calendar';
+// Maps
+@import 'components/maps/vector-maps';
+// Responsive
+@import 'layout/responsive/responsive-base';
+
+.icon-equalizer::before {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17zM9 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm6 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-6 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.search-wrapper.active {
+  width: 210px;
+  .close {
+    left: 300px;
+  }
+  .input-holder {
+    width: 215px;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .btn-close {
+    left: 242px;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .search-wrapper.active {
+    flex-grow: 1;
+    width: 295px;
+    .close {
+      left: 300px;
+    }
+    .input-holder {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      transition: none;
+    }
+    .btn-close {
+      left: 242px;
+    }
+  }
+}
+.border-dashed {
+  border-style: dashed !important;
+}
+.show {
+  display: block;
+}
+.loading {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.7);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  .spinner {
+    position: absolute;
+    top: 4%;
+    left: 50%;
+  }
+}
+
+.pos-top-50 {
+  top: 50% !important;
+}
+
+.offcanvas-top .offcanvas-header .offcanvas-title {
+  .btn-close {
+    &::before {
+      content: 'Cancel';
+    }
+    $btn-close-bg: none !important;
+  }
+  width: 100%;
+}
+.toast-top-right {
+  top: 70px;
+}
+.object-contain {
+  object-fit: contain;
+}
+.h-60 {
+  height: 60%;
+}
+.border-dashed {
+  border-style: dashed;
+}
+
+.nav-bg {
+  background-color: #344b1f !important;
+}
+
+.modal-dialog-centered {
+  box-shadow: none !important;
+}
+
+.navbar-expand-md > .container {
+  display: flex;
+  flex-wrap: nowrap !important;
+  .navbar-brand {
+    margin-right: 0.5rem;
+  }
+  .navbar-toggler {
+    padding: 0;
+    border: none;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .navbar-expand-md > .container {
+    flex-wrap: inherit;
+  }
+}
