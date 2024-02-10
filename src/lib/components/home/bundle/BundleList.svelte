@@ -5,9 +5,12 @@
   import { countries } from '$lib';
   import Select from 'svelte-select';
   import BundleCard from '$lib/components/home/bundle/BundleCard.svelte';
+  import Search from '$lib/components/Search.svelte';
 
   export let region: string;
   let ready = false;
+  let searchTerm: string;
+  let debouncedSearch: number;
   let bundles: Bundle[];
   let destinationCountry: Country | undefined;
   let countryList: Country[] = countries.filter((country) => country.region === region);
@@ -20,6 +23,7 @@
     const response = await get('/catalogue', {
       region,
       countries: countries.join(','),
+      ...(searchTerm ? { description: searchTerm } : {}),
       page,
       perPage
     });
@@ -53,7 +57,14 @@
   async function listBundleByCountry() {
     page = 1;
     const countries = destinationCountry ? [destinationCountry.iso] : [];
-    await getBundles(countries);
+    clearTimeout(debouncedSearch);
+    if (searchTerm) {
+      debouncedSearch = setTimeout(async () => {
+        await getBundles(countries);
+      }, 500);
+    } else {
+      await getBundles(countries);
+    }
   }
 
   async function loadMoreBundles() {
@@ -66,17 +77,27 @@
   }
 </script>
 
-<Select
-  class="country"
-  inputStyles="height: border-box;"
-  bind:value={destinationCountry}
-  placeholder="Please Select Destination Country"
-  itemId="iso"
-  label="name"
-  items={countryList}
-  id="destinationCountry"
-  on:select={listBundleByCountry}
-/>
+<div class="col-md-12">
+  <div class="row">
+    <div class="col-md-6 mt-2">
+      <Select
+        class="country"
+        inputStyles="height: border-box;"
+        bind:value={destinationCountry}
+        placeholder="Please Select Destination Country"
+        itemId="iso"
+        label="name"
+        items={countryList}
+        id="destinationCountry"
+        on:select={listBundleByCountry}
+      />
+    </div>
+    <div class="col-md-6 mt-2">
+      <Search on:search={() => listBundleByCountry()} classes="mb-2" bind:value={searchTerm} />
+    </div>
+  </div>
+</div>
+
 {#if ready}
   {#each bundles as bundle}
     <BundleCard {bundle} />
